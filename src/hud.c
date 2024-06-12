@@ -4,6 +4,7 @@
 
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+#include <stdio.h>
 
 #include "hud.h"
 #include "utils/helper.h"
@@ -12,7 +13,8 @@
 #include "display.h"
 #include "ship.h"
 
-ALLEGRO_FONT* font;
+extern ALLEGRO_FONT *font;
+
 long score_display;
 
 void hud_init()
@@ -48,8 +50,19 @@ void hud_update(float time_elapsed, float fps)
 }
 
 
-void hud_draw()
+void hud_draw(float fps)
 {
+    // Drawing game controls text
+    al_draw_text(font, al_map_rgb(255, 255, 255), 200, 0, 0, "Arrow keys to move");
+    al_draw_text(font, al_map_rgb(255, 255, 255), 200, 10, 0, "X to shoot");
+    al_draw_text(font, al_map_rgb(255, 255, 255), 200, 20, 0, "Esc to quit");
+    al_draw_text(font, al_map_rgb(255, 255, 255), 200, 30, 0, "Space to pause");
+    al_draw_text(font, al_map_rgb(255, 255, 255), 200, 40, 0, "F to toggle the frame rate");
+
+    // Drawing the current frame rate
+    char fps_text[20];
+    snprintf(fps_text, sizeof(fps_text), "FPS: %.1f", fps);
+    al_draw_text(font, al_map_rgb(255, 255, 255), 200, 50, 0, fps_text);
     al_draw_textf(
         font,
         al_map_rgb_f(1,1,1),

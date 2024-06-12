@@ -3,6 +3,7 @@
 
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
@@ -21,17 +22,19 @@
 #include "hud.h"
 
 // Declare variables for frame rate and timing
-const float FPS_30 = 30.0;
-const float FPS_60 = 60.0;
-float FPS = FPS_60; // Start with 60 FPS
+const float fps_30 = 30.0;
+const float fps_60 = 60.0;
+float fps = fps_60; // Start with 60 fps
 
 long frames;
 long score;
 bool key_f_pressed = false; // Add a flag for the 'F' key press
+bool paused = false; // Add a flag for the paused state
+int countdown = 0; // Add a variable for the countdown
+ALLEGRO_FONT* font = NULL;
 
 void init()
 {
-
     must_init(al_init(), "allegro");
     must_init(al_install_keyboard(), "keyboard");
 
@@ -46,8 +49,14 @@ void init()
     audio_init();
 
     must_init(al_init_image_addon(), "image");
-    sprites_init();
+    must_init(al_init_font_addon(), "font");
+    must_init(al_init_ttf_addon(), "ttf");
 
+    // Load a TTF font with size 48
+    font = al_load_ttf_font("./assets/font/Tiny5-Regular.ttf", 92, 0);
+    must_init(font, "font");
+
+    sprites_init();
     hud_init();
 
     must_init(al_init_primitives_addon(), "primitives");
@@ -83,19 +92,21 @@ void init()
         switch(event.type)
         {
             case ALLEGRO_EVENT_TIMER:
-                float time_elapsed = 1.0 / FPS;
-                fx_update(time_elapsed, FPS);
-                shots_update(time_elapsed, FPS);
-                stars_update(time_elapsed, FPS);
-                ship_update(time_elapsed, FPS);
-                aliens_update(time_elapsed, FPS);
-                hud_update(time_elapsed, FPS);
+                if (!paused) {
+                    float time_elapsed = 1.0 / fps;
+                    fx_update(time_elapsed, fps);
+                    shots_update(time_elapsed, fps);
+                    stars_update(time_elapsed, fps);
+                    ship_update(time_elapsed, fps);
+                    aliens_update(time_elapsed, fps);
+                    hud_update(time_elapsed, fps);
 
-                if(key[ALLEGRO_KEY_ESCAPE])
-                    done = true;
+                    frames++;
 
+                    if (key[ALLEGRO_KEY_ESCAPE])
+                        done = true;
+                }
                 redraw = true;
-                frames++;
                 break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
@@ -103,6 +114,16 @@ void init()
                 {
                     key_f_pressed = true;
                 }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_SPACE)
+                {
+                    if (paused)
+                    {
+                        countdown = 3; // Start countdown from 3
+                    }
+                    paused = !paused;
+                }
+
                 break;
 
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
@@ -112,15 +133,15 @@ void init()
 
         if(key_f_pressed)
         {
-            if(FPS == FPS_60)
+            if(fps == fps_60)
             {
-                FPS = FPS_30;
+                fps = fps_30;
             }
             else
             {
-                FPS = FPS_60;
+                fps = fps_60;
             }
-            al_set_timer_speed(timer, 1.0 / FPS);
+            al_set_timer_speed(timer, 1.0 / fps);
             key_f_pressed = false;
         }
 
@@ -131,22 +152,45 @@ void init()
 
         if(redraw && al_is_event_queue_empty(queue))
         {
-            disp_pre_draw();
-            al_clear_to_color(al_map_rgb(0,0,0));
+            if (paused && countdown > 0)
+            {
+                // Display the countdown
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+                char countdown_text[2];
+                snprintf(countdown_text, 2, "%d", countdown);
+                al_draw_text(font, al_map_rgb(255, 255, 255), 500, 300, ALLEGRO_ALIGN_CENTER, countdown_text);
+                al_flip_display();
 
-            stars_draw();
-            aliens_draw();
-            shots_draw();
-            fx_draw();
-            ship_draw();
+                // Decrease the countdown every second
+                al_rest(1.0);
+                countdown--;
 
-            hud_draw();
+                if (countdown == 0)
+                {
+                    paused = false;
+                }
+            }
+            else if (!paused)
+            {
+                disp_pre_draw();
+                al_clear_to_color(al_map_rgb(0,0,0));
 
-            disp_post_draw();
+                stars_draw();
+                aliens_draw();
+                shots_draw();
+                fx_draw();
+                ship_draw();
+
+                hud_draw(fps);
+
+                disp_post_draw();
+            }
+
             redraw = false;
         }
     }
 
+    al_destroy_font(font);
     sprites_deinit();
     hud_deinit();
     audio_deinit();
