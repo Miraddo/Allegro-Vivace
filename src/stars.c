@@ -26,11 +26,11 @@ void stars_init()
     }
 }
 
-void stars_update()
+void stars_update(float time_elapsed, float fps)
 {
     for(int i = 0; i < STARS_N; i++)
     {
-        stars[i].y += stars[i].speed;
+        stars[i].y += stars[i].speed * time_elapsed * fps; // Adjust movement for time elapsed
         if(stars[i].y >= BUFFER_H)
         {
             stars[i].y = 0;

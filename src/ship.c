@@ -24,25 +24,27 @@ void ship_init()
     ship.invincible_timer = 120;
 }
 
-void ship_update()
+void ship_update(float time_elapsed, float fps)
 {
     if(ship.lives < 0)
         return;
 
     if(ship.respawn_timer)
     {
-        ship.respawn_timer--;
+        ship.respawn_timer -= time_elapsed * fps; // Adjust timer for time elapsed
+        if (ship.respawn_timer < 0) ship.respawn_timer = 0; // Ensure timer doesn't go negative
         return;
     }
 
     if(key[ALLEGRO_KEY_LEFT])
-        ship.x -= SHIP_SPEED;
+        ship.x -= SHIP_SPEED * time_elapsed * fps; // Adjust movement for time elapsed
     if(key[ALLEGRO_KEY_RIGHT])
-        ship.x += SHIP_SPEED;
+        ship.x += SHIP_SPEED * time_elapsed * fps; // Adjust movement for time elapsed
     if(key[ALLEGRO_KEY_UP])
-        ship.y -= SHIP_SPEED;
+        ship.y -= SHIP_SPEED * time_elapsed * fps; // Adjust movement for time elapsed
     if(key[ALLEGRO_KEY_DOWN])
-        ship.y += SHIP_SPEED;
+        ship.y += SHIP_SPEED * time_elapsed * fps; // Adjust movement for time elapsed
+
 
     if(ship.x < 0)
         ship.x = 0;
@@ -55,7 +57,11 @@ void ship_update()
         ship.y = SHIP_MAX_Y;
 
     if(ship.invincible_timer)
-        ship.invincible_timer--;
+    {
+
+        ship.invincible_timer -= time_elapsed * fps; // Adjust timer for time elapsed
+        if (ship.invincible_timer < 0) ship.invincible_timer = 0; // Ensure timer doesn't go negative    else
+    }
     else
     {
         if(shots_collide(true, ship.x, ship.y, SHIP_W, SHIP_H))
@@ -74,7 +80,10 @@ void ship_update()
     }
 
     if(ship.shot_timer)
-        ship.shot_timer--;
+    {
+        ship.shot_timer -= time_elapsed * fps; // Adjust timer for time elapsed
+        if (ship.shot_timer < 0) ship.shot_timer = 0; // Ensure timer doesn't go negative
+    }
     else if(key[ALLEGRO_KEY_X])
     {
         int x = ship.x + (SHIP_W / 2);

@@ -47,14 +47,15 @@ void fx_add(bool spark, int x, int y)
     }
 }
 
-void fx_update()
+void fx_update(float time_elapsed, float fps)
 {
     for(int i = 0; i < FX_N; i++)
     {
         if(!fx[i].used)
             continue;
 
-        fx[i].frame++;
+        // Increment the frame based on time elapsed
+        fx[i].frame += time_elapsed * fps;  // Assuming FPS is the frame rate
 
         if((!fx[i].spark && (fx[i].frame == (EXPLOSION_FRAMES * 2)))
         || ( fx[i].spark && (fx[i].frame == (SPARKS_FRAMES * 2)))

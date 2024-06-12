@@ -5,6 +5,6 @@
 #ifndef STARTS_H
 #define STARTS_H
 void stars_init();
-void stars_update();
+void stars_update(float time_elapsed, float fps);
 void stars_draw();
 #endif //STARTS_H

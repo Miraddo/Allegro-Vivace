@@ -85,7 +85,7 @@ bool shots_add(bool ship, bool straight, int x, int y)
     return false;
 }
 
-void shots_update()
+void shots_update(float time_elapsed, float fps)
 {
     for(int i = 0; i < SHOTS_N; i++)
     {
@@ -94,7 +94,7 @@ void shots_update()
 
         if(shots[i].ship)
         {
-            shots[i].y -= 5;
+            shots[i].y -= 5 * time_elapsed * fps; // Adjust movement for time elapsed
 
             if(shots[i].y < -SHIP_SHOT_H)
             {
@@ -104,8 +104,9 @@ void shots_update()
         }
         else // alien
         {
-            shots[i].x += shots[i].dx;
-            shots[i].y += shots[i].dy;
+            shots[i].x += shots[i].dx * time_elapsed * fps; // Adjust movement for time elapsed
+            shots[i].y += shots[i].dy * time_elapsed * fps; // Adjust movement for time elapsed
+
 
             if((shots[i].x < -ALIEN_SHOT_W)
             || (shots[i].x > BUFFER_W)
@@ -117,7 +118,7 @@ void shots_update()
             }
         }
 
-        shots[i].frame++;
+        shots[i].frame += time_elapsed * fps; // Adjust frame increment for time elapsed
     }
 }
 

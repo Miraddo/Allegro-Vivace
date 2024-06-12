@@ -1,4 +1,4 @@
-C:\Users\mposh\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/mposh/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe -L C:/Users/mposh/Projects/CLionProjects/RTS/E2/allegro/lib -lalleg -G Ninja -S C:\Users\mposh\Projects\CLionProjects\RTS\E2 -B C:\Users\mposh\Projects\CLionProjects\RTS\E2\cmake-build-debug-mingw
+"C:\Program Files\JetBrains\CLion 2024.1.3\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2024.1.3/bin/ninja/win/x64/ninja.exe" -L C:/Users/mposh/Projects/CLionProjects/RTS/E2/allegro/lib -lalleg -G Ninja -S C:\Users\mposh\Projects\CLionProjects\RTS\E2 -B C:\Users\mposh\Projects\CLionProjects\RTS\E2\cmake-build-debug-mingw
 CMake Warning:
   Ignoring extra path from command line:
 

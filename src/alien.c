@@ -10,6 +10,8 @@
 #include "sprites.h"
 #include "fx.h"
 #include "utils/random.h"
+#include <math.h>
+
 
 ALIEN aliens[ALIENS_N];
 
@@ -19,12 +21,12 @@ void aliens_init()
         aliens[i].used = false;
 }
 
-void aliens_update()
+void aliens_update(float time_elapsed, float fps)
 {
     int new_quota =
-        (frames % 120)
-        ? 0
-        : between(2, 4)
+            ((int)(frames * time_elapsed * fps) % 120)
+            ? 0
+            : between(2, 4)
     ;
     int new_x = between(10, BUFFER_W-50);
 
@@ -69,16 +71,16 @@ void aliens_update()
         switch(aliens[i].type)
         {
             case ALIEN_TYPE_BUG:
-                if(frames % 2)
+                if(fmod(frames * time_elapsed * fps, 2) < 1)  // Adjust movement for time elapsed
                     aliens[i].y++;
                 break;
 
             case ALIEN_TYPE_ARROW:
-                aliens[i].y++;
+                aliens[i].y += time_elapsed * fps; // Adjust movement for time elapsed
                 break;
 
             case ALIEN_TYPE_THICCBOI:
-                if(!(frames % 4))
+                if(fmod(frames * time_elapsed * fps, 4) < 1)  // Adjust movement for time elapsed
                     aliens[i].y++;
                 break;
             default: ;
@@ -91,7 +93,7 @@ void aliens_update()
         }
 
         if(aliens[i].blink)
-            aliens[i].blink--;
+            aliens[i].blink -= time_elapsed * fps; // Adjust timer for time elapsed
 
         if(shots_collide(false, aliens[i].x, aliens[i].y, ALIEN_W[aliens[i].type], ALIEN_H[aliens[i].type]))
         {
@@ -129,8 +131,8 @@ void aliens_update()
             continue;
         }
 
-        aliens[i].shot_timer--;
-        if(aliens[i].shot_timer == 0)
+        aliens[i].shot_timer -= time_elapsed * fps; // Adjust timer for time elapsed
+        if(aliens[i].shot_timer <= 0)
         {
             switch(aliens[i].type)
             {
@@ -154,6 +156,8 @@ void aliens_update()
         }
     }
 }
+
+
 
 void aliens_draw()
 {

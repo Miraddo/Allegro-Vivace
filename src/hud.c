@@ -28,10 +28,16 @@ void hud_deinit()
     al_destroy_font(font);
 }
 
-void hud_update()
+void hud_update(float time_elapsed, float fps)
 {
-    if(frames % 2)
+    static float frame_accumulator = 0.0f;
+    frame_accumulator += time_elapsed * fps;
+
+    // Execute the update logic every 2 frames
+    if(frame_accumulator < 2.0f)
         return;
+
+    frame_accumulator -= 2.0f;
 
     for(long i = 5; i > 0; i--)
     {
@@ -40,6 +46,7 @@ void hud_update()
             score_display += diff;
     }
 }
+
 
 void hud_draw()
 {

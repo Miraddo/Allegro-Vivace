@@ -20,8 +20,14 @@
 #include "stars.h"
 #include "hud.h"
 
+// Declare variables for frame rate and timing
+const float FPS_30 = 30.0;
+const float FPS_60 = 60.0;
+float FPS = FPS_60; // Start with 60 FPS
+
 long frames;
 long score;
+bool key_f_pressed = false; // Add a flag for the 'F' key press
 
 void init()
 {
@@ -77,12 +83,13 @@ void init()
         switch(event.type)
         {
             case ALLEGRO_EVENT_TIMER:
-                fx_update();
-                shots_update();
-                stars_update();
-                ship_update();
-                aliens_update();
-                hud_update();
+                float time_elapsed = 1.0 / FPS;
+                fx_update(time_elapsed, FPS);
+                shots_update(time_elapsed, FPS);
+                stars_update(time_elapsed, FPS);
+                ship_update(time_elapsed, FPS);
+                aliens_update(time_elapsed, FPS);
+                hud_update(time_elapsed, FPS);
 
                 if(key[ALLEGRO_KEY_ESCAPE])
                     done = true;
@@ -91,9 +98,30 @@ void init()
                 frames++;
                 break;
 
+            case ALLEGRO_EVENT_KEY_DOWN:
+                if(event.keyboard.keycode == ALLEGRO_KEY_F)
+                {
+                    key_f_pressed = true;
+                }
+                break;
+
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 done = true;
                 break;
+        }
+
+        if(key_f_pressed)
+        {
+            if(FPS == FPS_60)
+            {
+                FPS = FPS_30;
+            }
+            else
+            {
+                FPS = FPS_60;
+            }
+            al_set_timer_speed(timer, 1.0 / FPS);
+            key_f_pressed = false;
         }
 
         if(done)

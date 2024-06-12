@@ -7,7 +7,7 @@
 
 void hud_init();
 void hud_deinit();
-void hud_update();
+void hud_update(float time_elapsed, float fps);
 void hud_draw();
 
 #endif //HUD_H

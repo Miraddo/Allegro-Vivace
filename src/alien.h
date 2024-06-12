@@ -26,7 +26,7 @@ typedef struct ALIEN
 #define ALIENS_N 16
 
 void aliens_init();
-void aliens_update();
+void aliens_update(float time_elapsed, float fps);
 void aliens_draw();
 
 #endif //ALIEN_HE

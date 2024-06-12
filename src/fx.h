@@ -7,7 +7,7 @@
 
 void fx_init();
 void fx_add(bool spark, int x, int y);
-void fx_update();
+void fx_update(float time_elapsed, float fps);
 void fx_draw();
 
 #endif //FX_H

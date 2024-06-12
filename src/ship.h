@@ -20,7 +20,7 @@ typedef struct SHIP
 extern SHIP ship;
 
 void ship_init();
-void ship_update();
+void ship_update(float time_elapsed, float fps);
 void ship_draw();
 
 #endif //SHIP_HE
