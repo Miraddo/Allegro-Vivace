@@ -2,11 +2,11 @@
 // Created by milad on 6/2/2024.
 //
 // =============================================================================
-// including std libraries.
+// Including standard libraries.
 #include <stdio.h>
 
 // =============================================================================
-// including allegro5 libraries.
+// Including allegro5 libraries.
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
@@ -16,7 +16,7 @@
 #include <allegro5/allegro_primitives.h>
 
 // =============================================================================
-// including main header files.
+// Including main header files.
 #include "utils/helper.h"
 #include "display.h"
 #include "keyboard.h"
@@ -39,9 +39,15 @@ float fps = fps_60; // Start with 60 fps
 // Declare variables for the game state.
 long frames;
 long score;
-bool key_f_pressed = false; // Add a flag for the 'F' key press
-bool paused = false; // Add a flag for the paused state
-int countdown = 0; // Add a variable for the countdown
+
+// Add a flag for the 'F' key pressed state.
+bool key_f_pressed = false;
+
+// Add a flag for the paused state.
+bool paused = false;
+
+// Add a variable for the countdown.
+int countdown = 0;
 ALLEGRO_FONT* font = NULL;
 
 // =============================================================================
@@ -66,7 +72,6 @@ void init()
     must_init(al_init_font_addon(), "font");
     must_init(al_init_ttf_addon(), "ttf");
 
-    // ------------------------------------------------------------------------
     // Load custom font with using al_load_ttf_font function.
     font = al_load_ttf_font("./assets/font/Tiny5-Regular.ttf", 92, 0);
     must_init(font, "font");
@@ -79,7 +84,6 @@ void init()
     must_init(al_init_acodec_addon(), "audio codecs");
     must_init(al_reserve_samples(16), "reserve samples");
 
-    // ------------------------------------------------------------------------
     // register event sources for the queue.
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
@@ -111,6 +115,7 @@ void init()
                 // Update the game logic when the timer ticks.
                 if (!paused) {
                     float time_elapsed = 1.0 / fps;
+
                     fx_update(time_elapsed, fps);
                     shots_update(time_elapsed, fps);
                     stars_update(time_elapsed, fps);
@@ -147,6 +152,7 @@ void init()
                 }
 
                 break;
+
             // Handle the display close event.
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 done = true;
@@ -155,9 +161,12 @@ void init()
 
         if(key_f_pressed)
         {
-            if(fps == fps_60) {
+            if(fps == fps_60)
+            {
                 fps = fps_30;
-            } else {
+            }
+            else
+            {
                 fps = fps_60;
             }
 
@@ -165,19 +174,23 @@ void init()
             key_f_pressed = false;
         }
 
-        if(done)  break;
+        if(done)
+        {
+            break;
+        }
 
         keyboard_update(&event);
 
         if(redraw && al_is_event_queue_empty(queue))
         {
-            if (paused && countdown > 0)
+            if (countdown > 0)
             {
                 // Display the countdown when the game is paused.
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 char countdown_text[2];
                 snprintf(countdown_text, 2, "%d", countdown);
-                al_draw_text(font, al_map_rgb(255, 255, 255), 500, 300, ALLEGRO_ALIGN_CENTER, countdown_text);
+                al_draw_text(font, al_map_rgb(255, 255, 255), 500, 300,
+                             ALLEGRO_ALIGN_CENTER, countdown_text);
                 al_flip_display();
 
                 // Decrease the countdown every second.
@@ -188,7 +201,7 @@ void init()
                     paused = false;
                 }
             }
-            else if (!paused)
+            else if (!paused && countdown == 0)
             {
                 disp_pre_draw();
                 al_clear_to_color(al_map_rgb(0,0,0));

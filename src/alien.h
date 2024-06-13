@@ -6,7 +6,7 @@
 #ifndef ALIEN_HE
 #define ALIEN_HE
     // -------------------------------------------------------------------------
-    // Define the Type of the alien.
+    // Define the type of the alien.
     typedef enum ALIEN_TYPE
     {
         ALIEN_TYPE_BUG = 0,
@@ -15,6 +15,7 @@
         ALIEN_TYPE_N
     } ALIEN_TYPE;
 
+    // Define the alien structure.
     typedef struct ALIEN
     {
         int x, y;

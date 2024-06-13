@@ -17,7 +17,7 @@ ALLEGRO_SAMPLE* sample_shot;
 ALLEGRO_SAMPLE* sample_explode[2];
 
 // =============================================================================
-// Define the audio initialization function.
+// Declare the audio initialization function.
 void audio_init()
 {
     al_install_audio();
@@ -35,7 +35,7 @@ void audio_init()
 }
 
 // =============================================================================
-// Define the audio deinitialization function.
+// Declare the audio deinitialization function.
 void audio_deinit()
 {
     al_destroy_sample(sample_shot);

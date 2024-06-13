@@ -30,8 +30,7 @@ typedef struct FX
 FX fx[FX_N];
 
 // =============================================================================
-// Define the fx_init function. This function is responsible for initializing the
-// FXs.
+// fx_init: this function is for initializing the FXs.
 void fx_init()
 {
     for(int i = 0; i < FX_N; i++)
@@ -39,8 +38,7 @@ void fx_init()
 }
 
 // =============================================================================
-// Define the fx_add function. This function is responsible for adding a new FX
-// to the screen.
+// fx_add: this is for adding a new FX to the screen.
 void fx_add(bool spark, int x, int y)
 {
     if(!spark)
@@ -65,8 +63,7 @@ void fx_add(bool spark, int x, int y)
 }
 
 // =============================================================================
-// Define the fx_update function. This function is responsible for updating the
-// state of each FX in the game.
+// fx_update: this is for updating the state of each FX in the game.
 void fx_update(float time_elapsed, float fps)
 {
     for(int i = 0; i < FX_N; i++)
@@ -76,7 +73,6 @@ void fx_update(float time_elapsed, float fps)
             continue;
         }
 
-        // ---------------------------------------------------------------------
         // Increment the frame based on time elapsed and fps.
         fx[i].frame += time_elapsed * fps;
 
@@ -88,8 +84,7 @@ void fx_update(float time_elapsed, float fps)
 }
 
 // =============================================================================
-// Define the fx_draw function. This function is responsible for drawing each FX
-// on the screen.
+// fx_draw: this responsible for drawing each FX on the screen.
 void fx_draw()
 {
     for(int i = 0; i < FX_N; i++)

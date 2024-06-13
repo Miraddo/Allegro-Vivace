@@ -67,6 +67,7 @@ void aliens_update(float time_elapsed, float fps)
                 aliens[i].blink = 0;
                 aliens[i].used = true;
 
+                // Determine the life of the alien based on the type.
                 switch(aliens[i].type)
                 {
                     case ALIEN_TYPE_BUG:
@@ -86,10 +87,10 @@ void aliens_update(float time_elapsed, float fps)
             continue;
         }
 
+        // Adjust movement for time elapsed and frame count, for different type of alien.
         switch(aliens[i].type)
         {
             case ALIEN_TYPE_BUG:
-                // Adjust movement for time elapsed
                 if(fmod(frames * time_elapsed * fps, 2) < 1) {
                     aliens[i].y++;
                 }
@@ -97,12 +98,10 @@ void aliens_update(float time_elapsed, float fps)
                 break;
 
             case ALIEN_TYPE_ARROW:
-                // Adjust movement for time elapsed
                 aliens[i].y += time_elapsed * fps;
                 break;
 
             case ALIEN_TYPE_THICCBOI:
-                // Adjust movement for time elapsed
                 if(fmod(frames * time_elapsed * fps, 4) < 1)  {
                     aliens[i].y++;
                 }
@@ -119,7 +118,7 @@ void aliens_update(float time_elapsed, float fps)
         }
 
         if(aliens[i].blink){
-            // Adjust timer for time elapsed
+            // update the blink timer for the alien.
             aliens[i].blink -= time_elapsed * fps;
         }
 
@@ -160,7 +159,7 @@ void aliens_update(float time_elapsed, float fps)
             continue;
         }
 
-        // Adjust timer for time elapsed.
+        // update the shot timer for different type of alien.
         aliens[i].shot_timer -= time_elapsed * fps;
         if(aliens[i].shot_timer <= 0)
         {
