@@ -1,8 +1,16 @@
+// alien.c
+// Created by milad on 6/2/2024.
 //
-// Created by miraddo on 6/2/2024.
-//
+// =============================================================================
+// including std libraries.
+#include <math.h>
 
+// =============================================================================
+// including allegro5 libraries.
 #include <allegro5/allegro_font.h>
+
+// =============================================================================
+// including the header files.
 #include "alien.h"
 #include "global_variables.h"
 #include "display.h"
@@ -10,31 +18,41 @@
 #include "sprites.h"
 #include "fx.h"
 #include "utils/random.h"
-#include <math.h>
 
 
+// =============================================================================
+// Define the alien types.
 ALIEN aliens[ALIENS_N];
 
+// =============================================================================
+// Define aliens initializations.
 void aliens_init()
 {
-    for(int i = 0; i < ALIENS_N; i++)
+    for(int i = 0; i < ALIENS_N; i++){
         aliens[i].used = false;
+    }
 }
 
+// =============================================================================
+// Alien update function is responsible for updating the state of each alien in
+// the game.
 void aliens_update(float time_elapsed, float fps)
 {
-    int new_quota =
-            ((int)(frames * time_elapsed * fps) % 120)
-            ? 0
-            : between(2, 4)
-    ;
+    // ------------------------------------------------------------------------
+    // Determine the number of new aliens to spawn based on the current frame count and fps.
+    int new_quota;
+    if ((int) (frames * time_elapsed * fps) % 120) {
+        new_quota = 0;
+    } else {
+        new_quota = between(2, 4);
+    }
+
     int new_x = between(10, BUFFER_W-50);
 
     for(int i = 0; i < ALIENS_N; i++)
     {
         if(!aliens[i].used)
         {
-            // if this alien is unused, should it spawn?
             if(new_quota > 0)
             {
                 new_x += between(40, 80);
@@ -71,18 +89,26 @@ void aliens_update(float time_elapsed, float fps)
         switch(aliens[i].type)
         {
             case ALIEN_TYPE_BUG:
-                if(fmod(frames * time_elapsed * fps, 2) < 1)  // Adjust movement for time elapsed
+                // Adjust movement for time elapsed
+                if(fmod(frames * time_elapsed * fps, 2) < 1) {
                     aliens[i].y++;
+                }
+
                 break;
 
             case ALIEN_TYPE_ARROW:
-                aliens[i].y += time_elapsed * fps; // Adjust movement for time elapsed
+                // Adjust movement for time elapsed
+                aliens[i].y += time_elapsed * fps;
                 break;
 
             case ALIEN_TYPE_THICCBOI:
-                if(fmod(frames * time_elapsed * fps, 4) < 1)  // Adjust movement for time elapsed
+                // Adjust movement for time elapsed
+                if(fmod(frames * time_elapsed * fps, 4) < 1)  {
                     aliens[i].y++;
+                }
+
                 break;
+
             default: ;
         }
 
@@ -92,8 +118,11 @@ void aliens_update(float time_elapsed, float fps)
             continue;
         }
 
-        if(aliens[i].blink)
-            aliens[i].blink -= time_elapsed * fps; // Adjust timer for time elapsed
+        if(aliens[i].blink){
+            // Adjust timer for time elapsed
+            aliens[i].blink -= time_elapsed * fps;
+        }
+
 
         if(shots_collide(false, aliens[i].x, aliens[i].y, ALIEN_W[aliens[i].type], ALIEN_H[aliens[i].type]))
         {
@@ -131,7 +160,8 @@ void aliens_update(float time_elapsed, float fps)
             continue;
         }
 
-        aliens[i].shot_timer -= time_elapsed * fps; // Adjust timer for time elapsed
+        // Adjust timer for time elapsed.
+        aliens[i].shot_timer -= time_elapsed * fps;
         if(aliens[i].shot_timer <= 0)
         {
             switch(aliens[i].type)
@@ -140,10 +170,12 @@ void aliens_update(float time_elapsed, float fps)
                     shots_add(false, false, cx, cy);
                     aliens[i].shot_timer = 150;
                     break;
+
                 case ALIEN_TYPE_ARROW:
                     shots_add(false, true, cx, aliens[i].y);
                     aliens[i].shot_timer = 80;
                     break;
+
                 case ALIEN_TYPE_THICCBOI:
                     shots_add(false, true, cx-5, cy);
                     shots_add(false, true, cx+5, cy);
@@ -151,6 +183,7 @@ void aliens_update(float time_elapsed, float fps)
                     shots_add(false, true, cx+5, cy + 8);
                     aliens[i].shot_timer = 200;
                     break;
+
                 default: ;
             }
         }
@@ -158,15 +191,19 @@ void aliens_update(float time_elapsed, float fps)
 }
 
 
-
+// =============================================================================
+// Alien draw function is responsible for drawing the aliens on the screen.
 void aliens_draw()
 {
     for(int i = 0; i < ALIENS_N; i++)
     {
-        if(!aliens[i].used)
+        if(!aliens[i].used){
             continue;
-        if(aliens[i].blink > 2)
+        }
+
+        if(aliens[i].blink > 2){
             continue;
+        }
 
         al_draw_bitmap(sprites.alien[aliens[i].type], aliens[i].x, aliens[i].y, 0);
     }

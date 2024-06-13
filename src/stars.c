@@ -1,13 +1,18 @@
+// stars.c
+// Created by milad on 6/2/2024.
 //
-// Created by miraddo on 6/2/2024.
-//
-
+// =============================================================================
+// Include the allegro5 header file.
 #include <allegro5/allegro_font.h>
 
+// =============================================================================
+// Include the necessary header files.
 #include "stars.h"
 #include "utils/random.h"
 #include "display.h"
 
+// =============================================================================
+// Define the star structure.
 typedef struct STAR
 {
     float y;
@@ -17,6 +22,9 @@ typedef struct STAR
 #define STARS_N ((BUFFER_W / 2) - 1)
 STAR stars[STARS_N];
 
+// =============================================================================
+// Define the stars_init function. This function is responsible for initializing
+// the stars.
 void stars_init()
 {
     for(int i = 0; i < STARS_N; i++)
@@ -26,6 +34,9 @@ void stars_init()
     }
 }
 
+// =============================================================================
+// Define the stars_update function. This function is responsible for updating
+// the stars.
 void stars_update(float time_elapsed, float fps)
 {
     for(int i = 0; i < STARS_N; i++)
@@ -39,6 +50,9 @@ void stars_update(float time_elapsed, float fps)
     }
 }
 
+// =============================================================================
+// Define the stars_draw function. This function is responsible for drawing
+// the stars.
 void stars_draw()
 {
     float star_x = 1.5;

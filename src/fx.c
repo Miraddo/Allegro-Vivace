@@ -1,16 +1,20 @@
+// fx.h
+// Created by milad on 6/2/2024.
 //
-// Created by miraddo on 6/2/2024.
-//
+// =============================================================================
+// including allegro5 libraries.
 #include <allegro5/allegro5.h>
-#include <allegro5/allegro_font.h>
 #include <allegro5/allegro_audio.h>
 
+// =============================================================================
+// including the audio header file.
 #include "fx.h"
 #include "audio.h"
 #include "sprites.h"
-
 #include "utils/random.h"
 
+// =============================================================================
+// Define the FX struct.
 typedef struct FX
 {
     int x, y;
@@ -19,24 +23,37 @@ typedef struct FX
     bool used;
 } FX;
 
+// =============================================================================
+// Define the FX_N constant. This constant represents the number of FXs (effects) that can
+// be displayed on the screen at the same time.
 #define FX_N 128
 FX fx[FX_N];
 
+// =============================================================================
+// Define the fx_init function. This function is responsible for initializing the
+// FXs.
 void fx_init()
 {
     for(int i = 0; i < FX_N; i++)
         fx[i].used = false;
 }
 
+// =============================================================================
+// Define the fx_add function. This function is responsible for adding a new FX
+// to the screen.
 void fx_add(bool spark, int x, int y)
 {
     if(!spark)
+    {
         al_play_sample(sample_explode[between(0, 2)], 0.75, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+    }
 
     for(int i = 0; i < FX_N; i++)
     {
         if(fx[i].used)
+        {
             continue;
+        }
 
         fx[i].x = x;
         fx[i].y = y;
@@ -47,15 +64,21 @@ void fx_add(bool spark, int x, int y)
     }
 }
 
+// =============================================================================
+// Define the fx_update function. This function is responsible for updating the
+// state of each FX in the game.
 void fx_update(float time_elapsed, float fps)
 {
     for(int i = 0; i < FX_N; i++)
     {
         if(!fx[i].used)
+        {
             continue;
+        }
 
-        // Increment the frame based on time elapsed
-        fx[i].frame += time_elapsed * fps;  // Assuming FPS is the frame rate
+        // ---------------------------------------------------------------------
+        // Increment the frame based on time elapsed and fps.
+        fx[i].frame += time_elapsed * fps;
 
         if((!fx[i].spark && (fx[i].frame == (EXPLOSION_FRAMES * 2)))
         || ( fx[i].spark && (fx[i].frame == (SPARKS_FRAMES * 2)))
@@ -64,6 +87,9 @@ void fx_update(float time_elapsed, float fps)
     }
 }
 
+// =============================================================================
+// Define the fx_draw function. This function is responsible for drawing each FX
+// on the screen.
 void fx_draw()
 {
     for(int i = 0; i < FX_N; i++)

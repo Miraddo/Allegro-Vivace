@@ -1,5 +1,11 @@
+// init.c
+// Created by milad on 6/2/2024.
+//
+// =============================================================================
+// Include the necessary header files.
 #include "src/init.h"
 
+// Entry point of the program.
 int main()
 {
     init();

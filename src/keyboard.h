@@ -1,16 +1,23 @@
+// keyboard.h
+// Created by milad on 6/2/2024.
 //
-// Created by miraddo on 6/2/2024.
-//
-
+// =============================================================================
+// Define the KEYBAORD_H macro.
 #ifndef KEYBAORD_H
 #define KEYBAORD_H
 
-#define KEY_SEEN     1
-#define KEY_RELEASED 2
+    // -------------------------------------------------------------------------
+    // Define the constants.
+    #define KEY_SEEN     1
+    #define KEY_RELEASED 2
 
-extern unsigned char key[ALLEGRO_KEY_MAX];
+    // -------------------------------------------------------------------------
+    // Declare the global variables.
+    extern unsigned char key[ALLEGRO_KEY_MAX];
 
-void keyboard_init();
-void keyboard_update(ALLEGRO_EVENT* event);
+    // -------------------------------------------------------------------------
+    // Define the functions.
+    void keyboard_init();
+    void keyboard_update(ALLEGRO_EVENT* event);
 
 #endif //KEYBAORD_H

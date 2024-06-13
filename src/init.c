@@ -1,6 +1,12 @@
 // init.c
+// Created by milad on 6/2/2024.
+//
+// =============================================================================
+// including std libraries.
 #include <stdio.h>
 
+// =============================================================================
+// including allegro5 libraries.
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
@@ -9,6 +15,8 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_primitives.h>
 
+// =============================================================================
+// including main header files.
 #include "utils/helper.h"
 #include "display.h"
 #include "keyboard.h"
@@ -21,11 +29,14 @@
 #include "stars.h"
 #include "hud.h"
 
-// Declare variables for frame rate and timing
+// =============================================================================
+// Declare variables for frame rate and timing.
 const float fps_30 = 30.0;
 const float fps_60 = 60.0;
 float fps = fps_60; // Start with 60 fps
 
+// =============================================================================
+// Declare variables for the game state.
 long frames;
 long score;
 bool key_f_pressed = false; // Add a flag for the 'F' key press
@@ -33,8 +44,12 @@ bool paused = false; // Add a flag for the paused state
 int countdown = 0; // Add a variable for the countdown
 ALLEGRO_FONT* font = NULL;
 
+// =============================================================================
+// Declare the init function to initialize the game.
 void init()
 {
+    // ------------------------------------------------------------------------
+    // Initialize allegro and check for errors if we can't initialize it.
     must_init(al_init(), "allegro");
     must_init(al_install_keyboard(), "keyboard");
 
@@ -45,14 +60,14 @@ void init()
     must_init(queue, "queue");
 
     disp_init();
-
     audio_init();
 
     must_init(al_init_image_addon(), "image");
     must_init(al_init_font_addon(), "font");
     must_init(al_init_ttf_addon(), "ttf");
 
-    // Load a TTF font with size 48
+    // ------------------------------------------------------------------------
+    // Load custom font with using al_load_ttf_font function.
     font = al_load_ttf_font("./assets/font/Tiny5-Regular.ttf", 92, 0);
     must_init(font, "font");
 
@@ -60,11 +75,12 @@ void init()
     hud_init();
 
     must_init(al_init_primitives_addon(), "primitives");
-
     must_init(al_install_audio(), "audio");
     must_init(al_init_acodec_addon(), "audio codecs");
     must_init(al_reserve_samples(16), "reserve samples");
 
+    // ------------------------------------------------------------------------
+    // register event sources for the queue.
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -92,6 +108,7 @@ void init()
         switch(event.type)
         {
             case ALLEGRO_EVENT_TIMER:
+                // Update the game logic when the timer ticks.
                 if (!paused) {
                     float time_elapsed = 1.0 / fps;
                     fx_update(time_elapsed, fps);
@@ -104,11 +121,15 @@ void init()
                     frames++;
 
                     if (key[ALLEGRO_KEY_ESCAPE])
+                    {
                         done = true;
+                    }
+
                 }
                 redraw = true;
                 break;
 
+            // Handle the key down event for the 'F' and 'SPACE' key.
             case ALLEGRO_EVENT_KEY_DOWN:
                 if(event.keyboard.keycode == ALLEGRO_KEY_F)
                 {
@@ -117,15 +138,16 @@ void init()
 
                 if (event.keyboard.keycode == ALLEGRO_KEY_SPACE)
                 {
+                    // Start countdown from 3 when the game is paused.
                     if (paused)
                     {
-                        countdown = 3; // Start countdown from 3
+                        countdown = 3;
                     }
                     paused = !paused;
                 }
 
                 break;
-
+            // Handle the display close event.
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 done = true;
                 break;
@@ -133,20 +155,17 @@ void init()
 
         if(key_f_pressed)
         {
-            if(fps == fps_60)
-            {
+            if(fps == fps_60) {
                 fps = fps_30;
-            }
-            else
-            {
+            } else {
                 fps = fps_60;
             }
+
             al_set_timer_speed(timer, 1.0 / fps);
             key_f_pressed = false;
         }
 
-        if(done)
-            break;
+        if(done)  break;
 
         keyboard_update(&event);
 
@@ -154,19 +173,18 @@ void init()
         {
             if (paused && countdown > 0)
             {
-                // Display the countdown
+                // Display the countdown when the game is paused.
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 char countdown_text[2];
                 snprintf(countdown_text, 2, "%d", countdown);
                 al_draw_text(font, al_map_rgb(255, 255, 255), 500, 300, ALLEGRO_ALIGN_CENTER, countdown_text);
                 al_flip_display();
 
-                // Decrease the countdown every second
+                // Decrease the countdown every second.
                 al_rest(1.0);
                 countdown--;
 
-                if (countdown == 0)
-                {
+                if (countdown == 0) {
                     paused = false;
                 }
             }
@@ -180,9 +198,7 @@ void init()
                 shots_draw();
                 fx_draw();
                 ship_draw();
-
                 hud_draw(fps);
-
                 disp_post_draw();
             }
 
@@ -190,6 +206,8 @@ void init()
         }
     }
 
+    // ------------------------------------------------------------------------
+    // Deinitialize all the resources.
     al_destroy_font(font);
     sprites_deinit();
     hud_deinit();

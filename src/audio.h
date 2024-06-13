@@ -1,15 +1,18 @@
+// audio.h
+// Created by milad on 6/2/2024.
 //
-// Created by miraddo on 6/2/2024.
-//
-#include <allegro5/allegro_audio.h>
-
+// =============================================================================
+// Define the AUDIO_H macro.
 #ifndef AUDIO_H
 #define AUDIO_H
+    // -------------------------------------------------------------------------
+    // Declare the audio variables.
+    extern ALLEGRO_SAMPLE* sample_shot;
+    extern ALLEGRO_SAMPLE* sample_explode[2];
 
-extern ALLEGRO_SAMPLE* sample_shot;
-extern ALLEGRO_SAMPLE* sample_explode[2];
-
-void audio_init();
-void audio_deinit();
+    // -------------------------------------------------------------------------
+    // Declare the functions.
+    void audio_init();
+    void audio_deinit();
 
 #endif //AUDIO_H

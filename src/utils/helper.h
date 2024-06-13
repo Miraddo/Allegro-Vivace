@@ -6,7 +6,7 @@
 #ifndef HELPER_H
 #define HELPER_H
 
-    // =============================================================================
+    // -------------------------------------------------------------------------
     // Declare the functions.
     void must_init(bool test, const char *description);  // function declaration
 

@@ -1,18 +1,26 @@
+// sprites.c
+// Created by milad on 6/2/2024.
 //
-// Created by miraddo on 6/2/2024.
-//
-
-
+// =============================================================================
+// Include the allegro5 header file.
 #include <allegro5/allegro_font.h>
 
+// =============================================================================
+// Include the necessary header files.
 #include "sprites.h"
 #include "utils/helper.h"
 
+// =============================================================================
+// Define the sprite structure.
 SPRITES sprites;
+
 
 const int ALIEN_W[] = {14, 13, 45};
 const int ALIEN_H[] = { 9, 10, 27};
 
+// =============================================================================
+// Define the sprite grab function. This function is responsible for grabbing a
+// sprite from the spritesheet.
 ALLEGRO_BITMAP* sprite_grab(int x, int y, int w, int h)
 {
     ALLEGRO_BITMAP* sprite = al_create_sub_bitmap(sprites._sheet, x, y, w, h);
@@ -20,6 +28,9 @@ ALLEGRO_BITMAP* sprite_grab(int x, int y, int w, int h)
     return sprite;
 }
 
+// =============================================================================
+// Define the sprites_init function. This function is responsible for initializing
+// the sprites.
 void sprites_init()
 {
     sprites._sheet = al_load_bitmap("./assets/images/spritesheet.png");
@@ -53,6 +64,9 @@ void sprites_init()
     sprites.powerup[3] = sprite_grab(30, 49, 9, 12);
 }
 
+// =============================================================================
+// Define the sprites_deinit function. This function is responsible for deinitializing
+// the sprites.
 void sprites_deinit()
 {
     al_destroy_bitmap(sprites.ship);

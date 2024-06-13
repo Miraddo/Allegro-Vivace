@@ -6,7 +6,7 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
-    // =============================================================================
+    // -------------------------------------------------------------------------
     // Define the functions.
     int between(int lo, int hi);
     int between_f(float lo, float hi);

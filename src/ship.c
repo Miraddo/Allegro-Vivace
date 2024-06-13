@@ -1,9 +1,12 @@
+// ship.c
+// Created by milad on 6/2/2024.
 //
-// Created by miraddo on 6/2/2024.
-//
-
+// =============================================================================
+// Include the allegro5 header file.
 #include <allegro5/allegro_font.h>
 
+// =============================================================================
+// Include the necessary header files.
 #include "ship.h"
 #include "fx.h"
 #include "display.h"
@@ -11,9 +14,13 @@
 #include "sprites.h"
 #include "shot.h"
 
-
+// =============================================================================
+// Define the ship structure.
 SHIP ship;
 
+// =============================================================================
+// Define the ship_init function. This function is responsible for initializing
+// the ship.
 void ship_init()
 {
     ship.x = (BUFFER_W / 2) - (SHIP_W / 2);
@@ -24,6 +31,9 @@ void ship_init()
     ship.invincible_timer = 120;
 }
 
+// =============================================================================
+// Define the ship_update function. This function is responsible for updating
+// the ship.
 void ship_update(float time_elapsed, float fps)
 {
     if(ship.lives < 0)
@@ -92,6 +102,9 @@ void ship_update(float time_elapsed, float fps)
     }
 }
 
+// =============================================================================
+// Define the ship_draw function. This function is responsible for drawing the
+// ship.
 void ship_draw()
 {
     if(ship.lives < 0)

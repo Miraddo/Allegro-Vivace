@@ -1,10 +1,13 @@
+// shot.c
+// Created by milad on 6/2/2024.
 //
-// Created by miraddo on 6/2/2024.
-//
+// =============================================================================
+// including allegro5 libraries.
 #include <allegro5/allegro5.h>
-#include <allegro5/allegro_font.h>
 #include <allegro5/allegro_audio.h>
 
+// =============================================================================
+// including the necessary header files.
 #include "audio.h"
 #include "utils/random.h"
 #include "utils/collision.h"
@@ -13,6 +16,8 @@
 #include "display.h"
 #include "fx.h"
 
+// =============================================================================
+// Define the shot structure.
 typedef struct SHOT
 {
     int x, y, dx, dy;
@@ -21,15 +26,23 @@ typedef struct SHOT
     bool used;
 } SHOT;
 
+// =============================================================================
+// Define the shots array.
 #define SHOTS_N 128
 SHOT shots[SHOTS_N];
 
+// =============================================================================
+// Define the shots_init function. This function is responsible for initializing
+// the shots.
 void shots_init()
 {
     for(int i = 0; i < SHOTS_N; i++)
         shots[i].used = false;
 }
 
+// =============================================================================
+// Define the shots_add function. This function is responsible for adding a shot
+// to the shots array.
 bool shots_add(bool ship, bool straight, int x, int y)
 {
     al_play_sample(
@@ -85,6 +98,9 @@ bool shots_add(bool ship, bool straight, int x, int y)
     return false;
 }
 
+// =============================================================================
+// Define the shots_update function. This function is responsible for updating
+// the shots.
 void shots_update(float time_elapsed, float fps)
 {
     for(int i = 0; i < SHOTS_N; i++)
@@ -122,6 +138,9 @@ void shots_update(float time_elapsed, float fps)
     }
 }
 
+// =============================================================================
+// Define the shots_collide function. This function is responsible for checking
+// if the shots collide.
 bool shots_collide(bool ship, int x, int y, int w, int h)
 {
     for(int i = 0; i < SHOTS_N; i++)
@@ -156,6 +175,9 @@ bool shots_collide(bool ship, int x, int y, int w, int h)
     return false;
 }
 
+// =============================================================================
+// Define the shots_draw function. This function is responsible for drawing the
+// shots.
 void shots_draw()
 {
     for(int i = 0; i < SHOTS_N; i++)
